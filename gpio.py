@@ -7,30 +7,38 @@ gpiozero.Device.pin_factory = PiGPIOFactory()
 from pythonosc import udp_client
 
 print("Starting GPIO -> OSC program")
-#setup osc
-ip = "127.0.0.1"  # The IP address of the OSC server
-port = 12321       # The port number the OSC server is listening on
+# setup osc
+ip = "127.0.0.1"    # Companion localhost
+port = 12321        # default Companion OSC API port
 client = udp_client.SimpleUDPClient(ip, port)
 
-
+# setup GPIO input pins
+button16 = Button(16, bounce_time=0.05)
 button20 = Button(20, bounce_time=0.05)
 button21 = Button(21, bounce_time=0.05)
-def pink_on():
+button26 = Button(26, bounce_time=0.05)
+
+def button16_action():
     client.send_message("/location/1/0/1/press", None) # pink on
-    print("pink on")
+    print("button 16 pressed routine")
 
-def pink_off():
-    client.send_message("/location/1/0/2/press", None) # pink off
-    print("pink off")
+def button20_action():
+    client.send_message("/location/1/1/1/press", None) # pink off
+    print("button 20 pressed routine")
 
-def btn_3():
-    print("button 3")
+def button21_action():
+    client.send_message("/location/1/2/1/press", None) # pink off
+    print("button 21 pressed routine")
 
-def btn4():
-    print("btn3")
+def button26_action():
+    client.send_message("/location/1/3/1/press", None) # pink off
+    print("button 26 pressed routine")
 
-button20.when_pressed = pink_on
-button21.when_pressed = pink_off
+button16.when_pressed = button16_action
+button20.when_pressed = button20_action
+button21.when_pressed = button21_action
+button26.when_pressed = button26_action
+
 
 while True:
     pass
